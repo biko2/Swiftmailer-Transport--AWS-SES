@@ -4,13 +4,13 @@ It's a simple transport for use with Swiftmailer to send mail over AWS SES.
 
 As on December 2011, Amazon [provides an SMTP interface to SES](http://aws.amazon.com/ses/faqs/#21), so you may prefer to use Swiftmailer's built in SMTP transport.
 
-There is, however, a [persistent-connections](https://github.com/jmhobbs/Swiftmailer-Transport--AWS-SES/tree/feature/persistent-connections) branch which might get you faster overall throughput than SMTP.  This isn't merged into master yet, so you'll need to tweak your composer.json to install it.  You can find that change, and keep track of progress on [PR #26](https://github.com/jmhobbs/Swiftmailer-Transport--AWS-SES/pull/26).
+There is, however, a [persistent-connections](https://github.com/biko2/Swiftmailer-Transport--AWS-SES/tree/feature/persistent-connections) branch which might get you faster overall throughput than SMTP.  This isn't merged into master yet, so you'll need to tweak your composer.json to install it.  You can find that change, and keep track of progress on [PR #26](https://github.com/jmhobbs/Swiftmailer-Transport--AWS-SES/pull/26).
 
 # Where do I put it?
 
 The best way to use it is through [composer](https://getcomposer.org/).
 
-    $ composer require jmhobbs/swiftmailer-transport-aws-ses
+    $ composer require biko2/swiftmailer-transport-aws-ses
 
 Which will bring in Swiftmailer if you don't already have it installed.
 
@@ -29,6 +29,22 @@ Like any other Swiftmailer transport:
     $mailer = Swift_Mailer::newInstance($transport);
     
     $mailer->send($message);
+
+# How do I use it without Autoload?
+
+Like any other Swiftmailer transport:
+
+    // Load library.
+    require_once [swift AWS library root]/swift_aws_init.php
+     
+    // Create the Transport
+    $transport = Swift_AWSTransport::newInstance( 'AWS_ACCESS_KEY', 'AWS_SECRET_KEY' );
+    
+    // Create the Mailer using your created Transport
+    $mailer = Swift_Mailer::newInstance($transport);
+    
+    $mailer->send($message);
+
 
 # Symfony1.X configuration
 
@@ -59,7 +75,7 @@ You need to register the Swift_Events_ResponseReceivedListener plugin with a cal
 
 # Swiftmailer Version
 
-Please note that some users [have had issues with older versions of Swiftmailer](https://github.com/jmhobbs/Swiftmailer-Transport--AWS-SES/issues/13).
+Please note that some users [have had issues with older versions of Swiftmailer](https://github.com/biko2/Swiftmailer-Transport--AWS-SES/issues/13).
 
 Versions 4.1.3 and up should work fine.
 
@@ -71,3 +87,4 @@ Versions 4.1.3 and up should work fine.
 * @jonatrey & @faz - Debugging and Testing issue #13
 * @casconed - Made debug function more robust, issue #21
 * @martijngastkemper - Added responseReceived event to get message id from AWS
+* @keopx - Added support without autoload.
